@@ -9,3 +9,6 @@ assets-src
 .claude
 .vercel
 .env*.local
+
+.vercel
+.env*
