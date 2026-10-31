@@ -1,0 +1,11 @@
+node_modules
+dist
+shots
+assets-src/reel-tmp
+assets-src/frames
+*.log
+# original fal.ai generations (176 MB) stay local; the shipped media is in public/media
+assets-src
+.claude
+.vercel
+.env*.local

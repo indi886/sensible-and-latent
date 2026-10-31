@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Sensible &amp; Latent — Heating, Cooling &amp; Air · Tucson, Arizona</title>
+  <meta name="description" content="Heat pumps, ducts and indoor air in Tucson, sized by room-by-room Manual J and proved with a commissioning report. Sensible &amp; Latent, AZ ROC 331408 CR-39." />
+  <meta name="theme-color" content="#0D0F11" />
+  <!-- design concept for a fictional firm: keep it out of search results -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta property="og:title" content="Sensible &amp; Latent — Heating, Cooling &amp; Air" />
+  <meta property="og:description" content="We size a system for the heat you feel and the heat you can't." />
+  <meta property="og:image" content="/media/video/poster.webp" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <!-- Paint-first: the preloader is styled inline so frame one is the vacuum gauge, not a flash of page. -->
+  <style>
+    html,body{background:#0D0F11;margin:0}
+    #preloader{position:fixed;inset:0;z-index:100;color:#EAF1F3;font-family:system-ui,sans-serif}
+    #preloader .pl-half{position:absolute;left:0;right:0;height:50.5%;background:#0D0F11}
+    #preloader .pl-top{top:0}#preloader .pl-bot{bottom:0}
+  </style>
+</head>
+<body class="is-loading">
+  <!-- 00 · PRELOADER — evacuation: a micron gauge pulls the page from atmosphere to 500 µ as real bytes arrive -->
+  <div id="preloader" aria-live="polite">
+    <div class="pl-half pl-top"></div>
+    <div class="pl-half pl-bot"></div>
+    <div class="pl-gauge">
+      <p class="pl-label"><span>Evacuating</span><span class="pl-state" data-pl-state>Pulling vacuum</span></p>
+      <p class="pl-reading"><span class="pl-num" data-pl-microns>760,000</span><span class="pl-unit">µ</span></p>
+      <div class="pl-scale" aria-hidden="true">
+        <div class="pl-track"><div class="pl-fill" data-pl-fill></div></div>
+        <ol class="pl-decades"><li>10⁶</li><li>10⁵</li><li>10⁴</li><li>10³</li><li>500</li></ol>
+      </div>
+      <p class="pl-bytes"><span data-pl-bytes>0.0 / 0.0 MB</span><span>Target 500 µ · decay test 10 min (sped up)</span></p>
+    </div>
+  </div>
+
+  <!-- Shared SVG filters: heat shimmer for the hero type, ironbow false-colour for thermal portraits -->
+  <svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="shimmer" x="-10%" y="-30%" width="120%" height="160%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.06" numOctaves="2" seed="7" result="n" data-shimmer-noise />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G" data-shimmer-map />
+      </filter>
+      <filter id="ironbow" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="0.30 0.59 0.11 0 0  0.30 0.59 0.11 0 0  0.30 0.59 0.11 0 0  0 0 0 1 0" />
+        <feComponentTransfer>
+          <feFuncR type="table" tableValues="0.04 0.17 0.42 0.71 0.91 0.98 1.00 1.00" />
+          <feFuncG type="table" tableValues="0.02 0.03 0.06 0.14 0.35 0.60 0.84 0.98" />
+          <feFuncB type="table" tableValues="0.10 0.30 0.47 0.45 0.22 0.10 0.26 0.80" />
+        </feComponentTransfer>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- Viewfinder: a thermal imager's readout, not a film slate -->
+  <div class="hud" aria-hidden="true">
+    <div class="hud-corners"><i></i><i></i><i></i><i></i></div>
+    <div class="hud-top">
+      <p class="hud-take"><span class="hud-k">take</span> <b data-hud-take>01</b><span class="hud-of">/ 09</span> <span class="hud-name" data-hud-name>Start-up</span></p>
+      <p class="hud-tc"><span class="hud-rec"></span><span data-hud-tc>00:00:00:00</span></p>
+    </div>
+    <div class="hud-bottom">
+      <dl class="hud-meta">
+        <div><dt>move</dt><dd data-hud-move>Push-in</dd></div>
+        <div><dt>lens</dt><dd data-hud-lens>35 mm</dd></div>
+        <div><dt>ε</dt><dd>0.95</dd></div>
+        <div><dt>spot</dt><dd><span data-hud-spot>40.1</span> °F</dd></div>
+      </dl>
+      <figure class="hud-ph" aria-label="Pressure–enthalpy chart showing the refrigerant's state">
+        <svg viewBox="0 0 160 96" class="hud-ph-svg">
+          <path class="ph-dome" d="M18 90 C 28 30, 58 8, 80 8 C 102 8, 124 34, 132 90" />
+          <path class="ph-cycle" d="M44 70 L118 70 L132 22 L52 22 Z" />
+          <circle class="ph-dot" r="3.2" cx="118" cy="70" data-ph-dot />
+        </svg>
+        <figcaption><span data-ph-state>Superheated vapour</span><span class="ph-num"><span data-ph-p>118</span> psig · <span data-ph-t>40</span> °F</span></figcaption>
+      </figure>
+    </div>
+  </div>
+  <div class="letterbox" aria-hidden="true"><i class="lb-top"></i><i class="lb-bot"></i></div>
+  <div class="cut-pulse" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true">
+    <div class="cursor-ring"><i></i><i></i><i></i><i></i></div>
+    <div class="cursor-dot"></div>
+    <p class="cursor-read"><span data-cursor-temp>74.2</span>°</p>
+  </div>
+
+  <header class="nav">
+    <a class="nav-brand" href="#hero" data-cursor aria-label="Sensible &amp; Latent, back to the top">
+      <span class="nav-mark">S<em>&amp;</em>L</span>
+      <span class="nav-sub">Heating, cooling &amp; air · Tucson</span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#about" data-cursor>Two heats</a>
+      <a href="#services" data-cursor>Services</a>
+      <a href="#process" data-cursor>The install</a>
+      <a href="#projects" data-cursor>Work</a>
+      <a href="#faq" data-cursor>Questions</a>
+    </nav>
+    <a class="btn btn-ghost nav-cta" href="#contact" data-cursor data-magnetic><span>Book a load calc</span></a>
+  </header>
+
+  <main id="main">
+    <!-- 01 · HERO — Start-up. Move: push-in through the fin pack into the film. -->
+    <section id="hero" class="take take-hero" data-take="01" data-name="Start-up" data-move="Push-in" data-lens="35 mm" data-theme="coil" data-spot="40.1" data-letterbox>
+      <div class="stage">
+        <canvas class="gl" data-gl="hero" aria-hidden="true"></canvas>
+        <video class="hero-takeover" data-takeover muted playsinline loop preload="none" poster="/media/video/poster.webp" aria-label="Reel: an evaporator coil frosting, a line set brazed, a manifold reading, cold air falling into a living room at dusk"></video>
+        <div class="hero-copy">
+          <p class="kicker" data-hero-kicker>Heating, cooling &amp; air · Tucson, Arizona · since 2009</p>
+          <h1 class="hero-title" data-hero-title aria-label="Sensible &amp; Latent">
+            <span class="ht-line ht-a" data-magnetic-text>Sensible</span>
+            <span class="ht-line ht-b"><em>&amp;</em> <span data-magnetic-text>Latent</span></span>
+          </h1>
+          <p class="hero-lede" data-hero-lede>We size a system for the heat you feel and the heat you can't. Load calculation first, equipment second, and a commissioning report with every number in it.</p>
+        </div>
+        <dl class="hero-data data-array" data-hero-data>
+          <div><dt>Compressor</dt><dd><span data-hd-rpm>0</span> rpm</dd></div>
+          <div><dt>Suction</dt><dd><span data-hd-psig>0</span> psig</dd></div>
+          <div><dt>Evap. sat.</dt><dd><span data-hd-sst>—</span> °F</dd></div>
+          <div><dt>Superheat</dt><dd><span data-hd-sh>—</span> °F</dd></div>
+          <div><dt>Coil face</dt><dd><span data-hd-face>96.0</span> °F</dd></div>
+          <div><dt>Design day</dt><dd>104 °F DB / 66 °F WB</dd></div>
+        </dl>
+        <p class="scroll-cue" data-hero-cue><span>Scroll to fly through the coil</span><i></i></p>
+        <p class="takeover-cap" data-takeover-cap>Reel · 00:19 · coil, braze, manifold, air</p>
+      </div>
+    </section>
+
+    <!-- 02 · ABOUT — Two kinds of heat. Move: rack focus between the sweating glass and the desert behind it. -->
+    <section id="about" class="take take-about" data-take="02" data-name="Two kinds of heat" data-move="Rack focus" data-lens="85 mm" data-theme="desert" data-spot="112.4">
+      <div class="stage">
+        <canvas class="gl" data-gl="glass" aria-hidden="true"></canvas>
+        <div class="about-words" aria-hidden="true">
+          <span class="aw aw-sens" data-aw="sensible">Sensible</span>
+          <span class="aw aw-lat" data-aw="latent">Latent</span>
+        </div>
+        <div class="about-panes">
+          <article class="about-pane" data-about-pane="0">
+            <p class="eyebrow">Sensible heat · what the thermostat reads</p>
+            <h2 class="h2">It is 112 °F on the other side of this glass.</h2>
+            <p>Sensible heat changes the temperature of the air. The sun on a west window, an uninsulated attic, a dark roof in July: a thermometer sees all of it, and every installer sizes for it.</p>
+          </article>
+          <article class="about-pane" data-about-pane="1">
+            <p class="eyebrow">Latent heat · what it doesn't</p>
+            <h2 class="h2">The water on this side is the other half of the load.</h2>
+            <p>Latent heat is the moisture in the air. In a monsoon August it can be a third of a Tucson cooling load, and no thermostat on the wall will show it to you. An oversized system cools the air in eight minutes and shuts off before the coil has pulled any water out of it. That's the clammy, cold-and-sticky house.</p>
+          </article>
+          <article class="about-pane" data-about-pane="2">
+            <p class="eyebrow">Since 2009 · AZ ROC 331408 · CR-39</p>
+            <h2 class="h2">So we measure both, before we sell you anything.</h2>
+            <p>Every job starts with a room-by-room Manual J, a blower-door number and a duct leakage test. Then we choose the equipment, in that order. Marisol Ibarra started the company after fifteen years of replacing systems that were sized off the old nameplate.</p>
+            <dl class="about-stats data-array">
+              <div><dt>Systems commissioned</dt><dd data-count="1912">1,912</dd></div>
+              <div><dt>Average downsizing</dt><dd><span data-count="0.7" data-dec="1">0.7</span> ton</dd></div>
+              <div><dt>Median duct leakage after</dt><dd><span data-count="3.4" data-dec="1">3.4</span> CFM25/100 ft²</dd></div>
+              <div><dt>Callbacks inside a year</dt><dd><span data-count="1.6" data-dec="1">1.6</span> %</dd></div>
+            </dl>
+          </article>
+        </div>
+        <p class="focus-read data-array" aria-hidden="true"><span>focus</span> <b data-focus-dist>0.42</b> m <span class="sep">·</span> <span>T/stop</span> <b>1.9</b></p>
+      </div>
+    </section>
+
+    <!-- 03 · SERVICES — IR survey. Move: whip pan. The pointer is the thermal imager. -->
+    <section id="services" class="take take-services" data-take="03" data-name="IR survey" data-move="Whip pan" data-lens="IR 24°" data-theme="ir" data-spot="168.0">
+      <div class="stage">
+        <canvas class="gl" data-gl="imager" aria-hidden="true"></canvas>
+        <div class="svc-head">
+          <p class="eyebrow">Services · move the imager over the frame</p>
+          <p class="svc-count data-array"><b data-svc-index>01</b> / 05</p>
+        </div>
+        <div class="svc-list">
+          <article class="svc" data-svc="0" data-svc-spot="Discharge line" data-svc-temp="168.0">
+            <h2 class="svc-title" data-magnetic-text>Heat pumps</h2>
+            <p class="svc-body">Variable-speed heat pumps, sized by Manual J and Manual S. We'd rather install a 2-ton that runs all afternoon than a 4-ton that slams on and off. One machine for July and January: our winter design low is 32 °F, and a cold-climate inverter still delivers full heat well below that.</p>
+            <dl class="data-array svc-data"><div><dt>Capacity</dt><dd>1.5–5 tons</dd></div><div><dt>Efficiency</dt><dd>SEER2 15.2–21 · HSPF2 7.8–10</dd></div><div><dt>Refrigerant</dt><dd>R-454B, R-32</dd></div></dl>
+          </article>
+          <article class="svc" data-svc="1" data-svc-spot="Suction line" data-svc-temp="51.2">
+            <h2 class="svc-title" data-magnetic-text>Diagnostics</h2>
+            <p class="svc-body">We read superheat and subcooling before we touch a refrigerant cylinder. Most "it just needs Freon" calls turn out to be a dirty coil, a failing TXV or a 40% airflow deficit, and adding refrigerant to those makes them worse.</p>
+            <dl class="data-array svc-data"><div><dt>Response</dt><dd>Same day, May–Sept</dd></div><div><dt>Diagnostic</dt><dd>$129 flat</dd></div><div><dt>First-visit fix</dt><dd>83% of calls</dd></div></dl>
+          </article>
+          <article class="svc" data-svc="2" data-svc-spot="Attic air" data-svc-temp="142.6">
+            <h2 class="svc-title" data-magnetic-text>Ductwork</h2>
+            <p class="svc-body">Manual D duct design, sheet-metal trunks from our own shop and mastic on every seam. We test leakage before and after, and you get both numbers. Ducts in a 150 °F attic are where most of the cold air in Tucson gets lost.</p>
+            <dl class="data-array svc-data"><div><dt>Static target</dt><dd>≤ 0.50 in. w.c.</dd></div><div><dt>Leakage target</dt><dd>≤ 4 CFM25/100 ft²</dd></div><div><dt>Insulation</dt><dd>R-8 attic runs</dd></div></dl>
+          </article>
+          <article class="svc" data-svc="3" data-svc-spot="Return air" data-svc-temp="74.6">
+            <h2 class="svc-title" data-magnetic-text>Indoor air</h2>
+            <p class="svc-body">MERV 13 filtration in a proper 4–5 inch rack, energy-recovery ventilators, and whole-house dehumidification for monsoon season. Fresh air you can measure: CO₂ under 800 ppm with the windows shut.</p>
+            <dl class="data-array svc-data"><div><dt>Filtration</dt><dd>MERV 13, 4–5 in media</dd></div><div><dt>Ventilation</dt><dd>ERV 70–150 CFM</dd></div><div><dt>Humidity</dt><dd>held at 40–55% RH</dd></div></dl>
+          </article>
+          <article class="svc" data-svc="4" data-svc-spot="Coil face" data-svc-temp="96.3">
+            <h2 class="svc-title" data-magnetic-text>Care plans</h2>
+            <p class="svc-body">Two visits a year, April and October. Coil rinse, condensate line flush, capacitor and contactor check, static pressure and a temperature split, logged against last year's so we see a problem coming before you feel it.</p>
+            <dl class="data-array svc-data"><div><dt>Plan</dt><dd>$19 / month</dd></div><div><dt>Dispatch</dt><dd>Priority, 24/7 in summer</dd></div><div><dt>Parts</dt><dd>15% off, logs for life</dd></div></dl>
+          </article>
+        </div>
+        <div class="ir-readout data-array" aria-hidden="true">
+          <p><span>Spot</span> <b data-ir-spot-label>Discharge line</b></p>
+          <p class="ir-temp"><b data-ir-temp>168.0</b><span>°F</span></p>
+          <p><span>Span</span> <b>38–182 °F</b> <span>· Ironbow</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 · PROCESS — The install, start to finish. Move: walkaround on a Catmull-Rom path. -->
+    <section id="process" class="take take-process" data-take="04" data-name="The install" data-move="Walkaround" data-lens="24 mm" data-theme="site" data-spot="104.0" data-letterbox>
+      <div class="stage">
+        <canvas class="gl" data-gl="process" aria-hidden="true"></canvas>
+        <div class="callouts" data-callouts aria-hidden="true"></div>
+        <header class="proc-head">
+          <p class="eyebrow">The install · one house in Tucson, start to finish</p>
+          <p class="proc-clock data-array"><span data-proc-day>Day 0</span> <b data-proc-time>09:00</b></p>
+        </header>
+        <ol class="proc-steps">
+          <li class="proc-step" data-step="0"><p class="ps-n">01</p><h3>Survey</h3><p class="ps-lede">Measure the house, not the old unit.</p><p class="ps-body">Every window, orientation, insulation level and leak goes into a room-by-room Manual J. The old 4-ton nameplate is not an input.</p></li>
+          <li class="proc-step" data-step="1"><p class="ps-n">02</p><h3>Design</h3><p class="ps-lede">Size the equipment and the air.</p><p class="ps-body">Manual S picks a 2.5-ton variable-speed heat pump. Manual D lays out an 18 × 10 in trunk and eight branches, each sized to its room's load.</p></li>
+          <li class="proc-step" data-step="2"><p class="ps-n">03</p><h3>Ductwork</h3><p class="ps-lede">Hang it, seal it, test it.</p><p class="ps-body">Trunk sections, takeoffs, boots and flex runs on straps every four feet. Mastic on every seam, then a duct-blaster test before a single register goes in.</p></li>
+          <li class="proc-step" data-step="3"><p class="ps-n">04</p><h3>Equipment</h3><p class="ps-lede">Set the condenser, level the air handler.</p><p class="ps-body">The outdoor unit goes on a 36 × 36 in pad, 3 in above grade with 18 in of clearance. The air handler goes in the hall closet on a vibration pad.</p></li>
+          <li class="proc-step" data-step="4"><p class="ps-n">05</p><h3>Line set</h3><p class="ps-lede">Braze under nitrogen.</p><p class="ps-body">Six joints are brazed with 15% silver while dry nitrogen flows at 3 SCFH. No scale forms inside the pipe to clog the metering device a year from now.</p></li>
+          <li class="proc-step" data-step="5"><p class="ps-n">06</p><h3>Test &amp; evacuate</h3><p class="ps-lede">Pressure first, then vacuum.</p><p class="ps-body">Nitrogen to 450 psig for 30 minutes, no drop. Then a vacuum under 500 microns, isolated. If it rises past 1,000 µ in ten minutes, we find out why.</p></li>
+          <li class="proc-step" data-step="6"><p class="ps-n">07</p><h3>Charge &amp; start</h3><p class="ps-lede">Weigh it in, then prove it.</p><p class="ps-body">Factory charge plus the line-set adder, weighed on a scale. Then we check it against subcooling at the coil, not against a guess.</p></li>
+          <li class="proc-step" data-step="7"><p class="ps-n">08</p><h3>Air on</h3><p class="ps-lede">Commission it, and hand over the numbers.</p><p class="ps-body">Supply and return temperatures, static pressure and airflow at every register go into a report you keep. Then the sun goes down, and the house stays at 75.</p></li>
+        </ol>
+        <dl class="proc-live data-array" aria-label="Live install readings">
+          <div><dt>Stage</dt><dd><b data-pl-stage>01</b> / 08</dd></div>
+          <div><dt>Duct pieces hung</dt><dd><span data-pl-ducts>0</span> / <span data-pl-ducts-total>0</span></dd></div>
+          <div><dt>Brazed joints</dt><dd><span data-pl-joints>0</span> / 6</dd></div>
+          <div><dt>Line pressure</dt><dd><span data-pl-psig>0</span> psig N₂</dd></div>
+          <div><dt>Vacuum</dt><dd><span data-pl-vac>—</span> µ</dd></div>
+          <div><dt>Supply / return</dt><dd><span data-pl-supply>—</span> / <span data-pl-return>98.0</span> °F</dd></div>
+          <div><dt>Cooling load</dt><dd><span data-pl-load>0</span> BTU/h</dd></div>
+        </dl>
+        <div class="proc-rail" aria-hidden="true"><i data-proc-rail></i></div>
+      </div>
+    </section>
+
+    <!-- 05 · PROJECTS — Damper bank. Move: tilt-up. Blades flip in an opposed ripple on a spring linkage. -->
+    <section id="projects" class="take take-projects" data-take="05" data-name="Damper bank" data-move="Tilt-up" data-lens="50 mm" data-theme="dusk" data-spot="57.2" data-letterbox>
+      <div class="stage">
+        <canvas class="gl" data-gl="damper" aria-hidden="true"></canvas>
+        <div class="proj-head">
+          <p class="eyebrow">Recent work · scroll drives the actuator</p>
+          <p class="proj-act data-array">Actuator <b data-damper-pos>0</b>% · <span data-damper-cfm>0</span> CFM through the bank</p>
+        </div>
+        <div class="proj-list">
+          <article class="proj" data-proj="0">
+            <p class="proj-n data-array">01 / 06 · Sam Hughes · 1928 brick bungalow</p>
+            <h2 class="proj-title">The back bedroom</h2>
+            <p class="proj-body">The old 4-ton split had been sized off the one before it. The load calc came in at 29,600 BTU/h. We put in a 2.5-ton variable-speed heat pump and rebuilt the attic ducts, sealed.</p>
+            <dl class="data-array proj-data"><div><dt>Tons</dt><dd>4.0 → 2.5</dd></div><div><dt>Bedroom vs hall</dt><dd>+9 °F → +1 °F</dd></div><div><dt>July bill</dt><dd>−38%</dd></div></dl>
+          </article>
+          <article class="proj" data-proj="1">
+            <p class="proj-n data-array">02 / 06 · Catalina Foothills · 2016 rammed earth</p>
+            <h2 class="proj-title">The west glass</h2>
+            <p class="proj-body">Twenty-two feet of west-facing glazing made the great room 11 °F hotter than the rest of the house by 5 pm. We zoned it with its own ducted 1.5-ton system.</p>
+            <dl class="data-array proj-data"><div><dt>Zones</dt><dd>2 · 3.0 + 1.5 tons</dd></div><div><dt>Great room, 5 pm</dt><dd>82 °F → 75 °F</dd></div><div><dt>Run time</dt><dd>long, low, quiet</dd></div></dl>
+          </article>
+          <article class="proj" data-proj="2">
+            <p class="proj-n data-array">03 / 06 · Barrio Viejo · 1880s adobe row house</p>
+            <h2 class="proj-title">No attic, no holes</h2>
+            <p class="proj-body">22-inch adobe walls and a protected street facade. We used ductless heads, ran the line sets in a chase behind the vigas, and set the condenser on the roof behind the parapet.</p>
+            <dl class="data-array proj-data"><div><dt>Heads</dt><dd>3 ductless</dd></div><div><dt>Holes in facade</dt><dd>0</dd></div><div><dt>Sound, low fan</dt><dd>24 dBA</dd></div></dl>
+          </article>
+          <article class="proj" data-proj="3">
+            <p class="proj-n data-array">04 / 06 · Broadway Blvd · 1968 dental office</p>
+            <h2 class="proj-title">Swapped overnight</h2>
+            <p class="proj-body">Two rooftop units on curbs from 1968. Two new 7.5-ton units with economizers went onto the old curbs on adapters, craned in at 2 am. The office opened at seven.</p>
+            <dl class="data-array proj-data"><div><dt>Units</dt><dd>2 × 7.5 tons</dd></div><div><dt>Hours lost</dt><dd>0</dd></div><div><dt>Free cooling</dt><dd>1,100 h / yr</dd></div></dl>
+          </article>
+          <article class="proj" data-proj="4">
+            <p class="proj-n data-array">05 / 06 · Rita Ranch · builder-grade closet</p>
+            <h2 class="proj-title">Half the static</h2>
+            <p class="proj-body">A closet system running at 0.92 in. w.c. with a one-inch filter jammed in the return. A new plenum, a 5-inch filter rack and a bigger return halved the static pressure.</p>
+            <dl class="data-array proj-data"><div><dt>Static pressure</dt><dd>0.92 → 0.46 in. w.c.</dd></div><div><dt>Airflow</dt><dd>+31%</dd></div><div><dt>Blower watts</dt><dd>−42%</dd></div></dl>
+          </article>
+          <article class="proj" data-proj="5">
+            <p class="proj-n data-array">06 / 06 · Oro Valley · 150 °F attic</p>
+            <h2 class="proj-title">Where the cold went</h2>
+            <p class="proj-body">Crushed flex, two disconnected boots and 38% leakage, in an attic that reaches 150 °F. We rebuilt the trunk in sheet metal and moved every branch onto straps.</p>
+            <dl class="data-array proj-data"><div><dt>Leakage</dt><dd>38% → 3%</dd></div><div><dt>Far register</dt><dd>71 °F → 57 °F</dd></div><div><dt>Run time, July</dt><dd>−4.1 h / day</dd></div></dl>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · TESTIMONIALS — Seven-day charts. Move: overhead lock-off with a slow creep. -->
+    <section id="testimonials" class="take take-voices" data-take="06" data-name="Seven-day charts" data-move="Overhead lock-off" data-lens="100 mm macro" data-theme="chart" data-spot="75.0">
+      <div class="stage">
+        <div class="chart-wrap">
+          <canvas class="chart" data-chart aria-hidden="true"></canvas>
+          <p class="chart-cap data-array"><span data-chart-who>Koenig residence</span> · <span data-chart-day>Mon 00:00</span> · <span class="pen-t">dry bulb <b data-chart-temp>78.4</b> °F</span> · <span class="pen-rh">RH <b data-chart-rh>58</b> %</span></p>
+        </div>
+        <div class="voices">
+          <p class="eyebrow">What they wrote · and what the data logger recorded</p>
+          <blockquote class="voice" data-voice="0">
+            <p class="voice-q">"Three companies quoted us a bigger unit. Marisol's crew measured every window and put in a smaller one. The back bedroom used to be nine degrees hotter than the hall. Now we can't tell them apart."</p>
+            <footer class="voice-by"><b>Ruth &amp; Daniel Koenig</b><span>Sam Hughes · bedroom swing 9.4 °F → 0.8 °F</span></footer>
+          </blockquote>
+          <blockquote class="voice" data-voice="1">
+            <p class="voice-q">"Two other companies wanted to replace the unit. Priya put a camera in the attic and showed us half our cold air was blowing into the insulation. They rebuilt the ducts and kept the unit."</p>
+            <footer class="voice-by"><b>Javier Ochoa</b><span>Oro Valley · far register 71 °F → 57 °F</span></footer>
+          </blockquote>
+          <blockquote class="voice" data-voice="2">
+            <p class="voice-q">"We run a dental office. They swapped both rooftop units overnight and we opened at seven. The report they left lists every reading. Our facilities manager framed it."</p>
+            <footer class="voice-by"><b>Dr. Amina Farouk</b><span>Broadway Blvd · operatory held 72 ± 0.5 °F</span></footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 · TEAM — Rating plates. Move: snap zoom. Portraits come up to temperature. -->
+    <section id="team" class="take take-team" data-take="07" data-name="Rating plates" data-move="Snap zoom" data-lens="85 mm" data-theme="plate" data-spot="98.6">
+      <div class="team-inner">
+        <header class="team-head">
+          <p class="eyebrow">The crew · each one rated like the equipment</p>
+          <h2 class="team-title"><span data-magnetic-text>Four people</span> <span class="team-title-b">who own a thermal camera.</span></h2>
+        </header>
+        <div class="team-grid">
+          <article class="member" data-member>
+            <figure class="m-photo"><img src="/media/img/t-marisol.webp" alt="Marisol Ibarra, founder, arms folded in a mechanical room" width="900" height="1189" loading="lazy" decoding="async" /><img class="m-ir" src="/media/img/t-marisol.webp" alt="" aria-hidden="true" width="900" height="1189" loading="lazy" decoding="async" /></figure>
+            <div class="plate">
+              <p class="plate-name">Marisol Ibarra</p>
+              <dl class="plate-rows">
+                <div><dt>Model</dt><dd>Founder · load calcs</dd></div>
+                <div><dt>Serial</dt><dd>ROC CR-39 qualifying party</dd></div>
+                <div><dt>Rated</dt><dd>31 yrs in the trade</dd></div>
+                <div><dt>Refrig.</dt><dd>R-22 · R-410A · R-454B</dd></div>
+                <div><dt>Note</dt><dd>Has never quoted a system without a Manual J.</dd></div>
+              </dl>
+              <i class="rivet r1"></i><i class="rivet r2"></i><i class="rivet r3"></i><i class="rivet r4"></i>
+            </div>
+          </article>
+          <article class="member" data-member>
+            <figure class="m-photo"><img src="/media/img/t-dayo.webp" alt="Dayo Okafor, commissioning lead, holding a digital manifold" width="900" height="1189" loading="lazy" decoding="async" /><img class="m-ir" src="/media/img/t-dayo.webp" alt="" aria-hidden="true" width="900" height="1189" loading="lazy" decoding="async" /></figure>
+            <div class="plate">
+              <p class="plate-name">Dayo Okafor</p>
+              <dl class="plate-rows">
+                <div><dt>Model</dt><dd>Commissioning lead</dd></div>
+                <div><dt>Serial</dt><dd>NATE heat pump · EPA 608 Universal</dd></div>
+                <div><dt>Rated</dt><dd>11 yrs · 1,140 start-ups</dd></div>
+                <div><dt>Refrig.</dt><dd>R-410A · R-454B · R-32</dd></div>
+                <div><dt>Note</dt><dd>Writes every number in the report you keep.</dd></div>
+              </dl>
+              <i class="rivet r1"></i><i class="rivet r2"></i><i class="rivet r3"></i><i class="rivet r4"></i>
+            </div>
+          </article>
+          <article class="member" data-member>
+            <figure class="m-photo"><img src="/media/img/t-hollis.webp" alt="Hollis Trent, sheet-metal fabricator, holding hand seamers in the shop" width="900" height="1189" loading="lazy" decoding="async" /><img class="m-ir" src="/media/img/t-hollis.webp" alt="" aria-hidden="true" width="900" height="1189" loading="lazy" decoding="async" /></figure>
+            <div class="plate">
+              <p class="plate-name">Hollis Trent</p>
+              <dl class="plate-rows">
+                <div><dt>Model</dt><dd>Sheet metal &amp; duct design</dd></div>
+                <div><dt>Serial</dt><dd>SMART journeyman · ACCA Manual D</dd></div>
+                <div><dt>Rated</dt><dd>38 yrs · 26-gauge to 18</dd></div>
+                <div><dt>Shop</dt><dd>22nd Street, brake and Pittsburgh lock</dd></div>
+                <div><dt>Note</dt><dd>Fabricates every trunk we hang.</dd></div>
+              </dl>
+              <i class="rivet r1"></i><i class="rivet r2"></i><i class="rivet r3"></i><i class="rivet r4"></i>
+            </div>
+          </article>
+          <article class="member" data-member>
+            <figure class="m-photo"><img src="/media/img/t-priya.webp" alt="Priya Raman, service manager, holding a thermal imaging camera" width="900" height="1189" loading="lazy" decoding="async" /><img class="m-ir" src="/media/img/t-priya.webp" alt="" aria-hidden="true" width="900" height="1189" loading="lazy" decoding="async" /></figure>
+            <div class="plate">
+              <p class="plate-name">Priya Raman</p>
+              <dl class="plate-rows">
+                <div><dt>Model</dt><dd>Service manager · diagnostics</dd></div>
+                <div><dt>Serial</dt><dd>Thermography Level I · EPA 608</dd></div>
+                <div><dt>Rated</dt><dd>13 yrs · runs dispatch</dd></div>
+                <div><dt>Tools</dt><dd>IR camera, flow hood, borescope</dd></div>
+                <div><dt>Note</dt><dd>Finds the leak before she quotes the fix.</dd></div>
+              </dl>
+              <i class="rivet r1"></i><i class="rivet r2"></i><i class="rivet r3"></i><i class="rivet r4"></i>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 · FAQ — Troubleshooting tree. Move: crane down the chart. -->
+    <section id="faq" class="take take-faq" data-take="08" data-name="Troubleshooting" data-move="Crane down" data-lens="35 mm" data-theme="tree" data-spot="52.0">
+      <div class="faq-inner">
+        <header class="faq-head">
+          <p class="eyebrow">Questions · read like a service manual</p>
+          <h2 class="faq-title">Symptom <span class="arrow">→</span> check <span class="arrow">→</span> answer</h2>
+        </header>
+        <div class="tree">
+          <i class="tree-trunk" data-trunk aria-hidden="true"></i>
+          <div class="node" data-node>
+            <i class="node-branch" aria-hidden="true"></i>
+            <button class="node-q" aria-expanded="false" data-cursor><span class="node-code">S-01</span><span class="node-text">My old unit was 4 tons. Shouldn't the new one be 4 tons too?</span><span class="node-check">check · Manual J</span></button>
+            <div class="node-a"><div><p>Only if the house still needs 4 tons, and most don't. Windows, insulation and duct leaks have changed since the old one went in, and plenty were oversized on day one. An oversized system short-cycles: it cools the air but never runs long enough to pull the moisture out. We run a room-by-room Manual J and size to that.</p></div></div>
+          </div>
+          <div class="node" data-node>
+            <i class="node-branch" aria-hidden="true"></i>
+            <button class="node-q" aria-expanded="false" data-cursor><span class="node-code">S-02</span><span class="node-text">Heat pump, or AC with a gas furnace?</span><span class="node-check">check · design low 32 °F</span></button>
+            <div class="node-a"><div><p>In Tucson, almost always a heat pump. Our winter design temperature is 32 °F, and a modern variable-speed heat pump delivers its rated heat below that at two and a half to three and a half times the efficiency of resistance heat. Dual fuel makes sense when gas is already in the house and you want to keep it.</p></div></div>
+          </div>
+          <div class="node" data-node>
+            <i class="node-branch" aria-hidden="true"></i>
+            <button class="node-q" aria-expanded="false" data-cursor><span class="node-code">S-03</span><span class="node-text">What is R-454B, and is my R-410A system obsolete?</span><span class="node-check">check · nameplate refrigerant</span></button>
+            <div class="node-a"><div><p>R-454B is the lower-GWP refrigerant new equipment has used since the 2025 EPA transition. Your R-410A system can be serviced for the rest of its life, and the refrigerant stays available. The two can't be mixed. New A2L equipment needs a leak-detection sensor in the air handler, and we install it and test it.</p></div></div>
+          </div>
+          <div class="node" data-node>
+            <i class="node-branch" aria-hidden="true"></i>
+            <button class="node-q" aria-expanded="false" data-cursor><span class="node-code">S-04</span><span class="node-text">Why is the back bedroom always hotter?</span><span class="node-check">check · airflow at the register</span></button>
+            <div class="node-a"><div><p>Usually airflow, not equipment: an undersized or leaking branch duct, no return path when the door is shut, or a register throwing air the wrong way. We measure airflow at each register with a flow hood and fix the duct before we suggest anything bigger.</p></div></div>
+          </div>
+          <div class="node" data-node>
+            <i class="node-branch" aria-hidden="true"></i>
+            <button class="node-q" aria-expanded="false" data-cursor><span class="node-code">S-05</span><span class="node-text">How long does an install take?</span><span class="node-check">check · ducts in scope?</span></button>
+            <div class="node-a"><div><p>A like-for-like heat pump swap takes one day. With new ductwork it takes two to three. We pressure test, evacuate and commission on the last day, and you have the report before we leave the driveway.</p></div></div>
+          </div>
+          <div class="node" data-node>
+            <i class="node-branch" aria-hidden="true"></i>
+            <button class="node-q" aria-expanded="false" data-cursor><span class="node-code">S-06</span><span class="node-text">How often should it be serviced?</span><span class="node-check">check · dust and monsoon</span></button>
+            <div class="node-a"><div><p>Twice a year in Tucson: in April before the cooling season and in October before heating. Haboob dust loads the outdoor coil, and condensate lines clog with algae in monsoon season. Both cost you capacity long before anything breaks.</p></div></div>
+          </div>
+          <div class="node" data-node>
+            <i class="node-branch" aria-hidden="true"></i>
+            <button class="node-q" aria-expanded="false" data-cursor><span class="node-code">S-07</span><span class="node-text">Are there rebates, and do you finance?</span><span class="node-check">check · utility programme</span></button>
+            <div class="node-a"><div><p>Utility rebates for qualifying heat pumps change every year. We check what applies to your exact model and house on the day we quote, and we file the paperwork. Financing is available on approved credit, with the terms written on the quote.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 · CONTACT — Defrost. Move: zoom-out as the frost melts off the lens. -->
+    <section id="contact" class="take take-contact" data-take="09" data-name="Defrost" data-move="Zoom-out" data-lens="35 → 18 mm" data-theme="defrost" data-spot="31.8">
+      <div class="defrost">
+        <div class="stage">
+          <img class="defrost-bg" data-defrost-bg src="/media/img/coil.webp" alt="" aria-hidden="true" width="1920" height="1072" decoding="async" loading="lazy" />
+          <canvas class="gl" data-gl="frost" aria-hidden="true"></canvas>
+          <div class="defrost-copy">
+            <h2 class="defrost-title" data-defrost-title><span>Tell us about the room</span> <span>that never cools.</span></h2>
+          </div>
+          <div class="defrost-hud">
+            <p class="eyebrow" data-defrost-eyebrow>Outdoor coil · <span data-defrost-mode>heating mode, 28 °F outside</span></p>
+            <p class="defrost-read data-array" aria-hidden="true">Coil <b data-defrost-temp>31.8</b> °F · <span data-defrost-state>frosting</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="contact-body">
+        <form class="ticket" data-ticket novalidate>
+          <header class="ticket-head">
+            <p class="eyebrow">Work order · load calculation visit</p>
+            <p class="ticket-no data-array">No. <b data-ticket-no>SL-26-1104</b></p>
+          </header>
+          <fieldset class="ticket-grid">
+            <label class="field"><span>Name</span><input name="name" autocomplete="name" required /></label>
+            <label class="field"><span>Phone</span><input name="phone" type="tel" autocomplete="tel" required /></label>
+            <label class="field"><span>Email</span><input name="email" type="email" autocomplete="email" /></label>
+            <label class="field"><span>Street address or ZIP</span><input name="address" autocomplete="street-address" required /></label>
+            <label class="field field-s"><span>House size, ft²</span><input name="sqft" inputmode="numeric" /></label>
+            <label class="field field-s"><span>Year built</span><input name="year" inputmode="numeric" /></label>
+            <label class="field field-s"><span>System age, yrs</span><input name="age" inputmode="numeric" /></label>
+          </fieldset>
+          <fieldset class="chips">
+            <legend>What's wrong? <span>Pick any</span></legend>
+            <label class="chip"><input type="checkbox" name="symptom" value="One room too hot" /><span>One room too hot</span></label>
+            <label class="chip"><input type="checkbox" name="symptom" value="High bills" /><span>High bills</span></label>
+            <label class="chip"><input type="checkbox" name="symptom" value="Clammy or humid" /><span>Clammy or humid</span></label>
+            <label class="chip"><input type="checkbox" name="symptom" value="Short-cycling" /><span>Short-cycling</span></label>
+            <label class="chip"><input type="checkbox" name="symptom" value="Noisy" /><span>Noisy</span></label>
+            <label class="chip"><input type="checkbox" name="symptom" value="Replacing an old system" /><span>Replacing an old system</span></label>
+            <label class="chip"><input type="checkbox" name="symptom" value="Just want the load calc" /><span>Just want the load calc</span></label>
+          </fieldset>
+          <label class="field field-wide"><span>Anything else: the room, the hour it gets bad, the noise it makes</span><textarea name="notes" rows="3"></textarea></label>
+          <footer class="ticket-foot">
+            <p class="ticket-note">A load-calc visit takes about 90 minutes. It costs $185, and it's free if you install with us.</p>
+            <button class="btn btn-solid" type="submit" data-cursor data-magnetic><span>Book the load calc</span></button>
+          </footer>
+          <p class="ticket-status" data-ticket-status role="status"></p>
+        </form>
+        <aside class="desk">
+          <dl class="desk-rows">
+            <div><dt>Call</dt><dd><a href="tel:+15205550187" data-cursor>(520) 555-0187</a></dd></div>
+            <div><dt>Write</dt><dd><a href="mailto:office@sensibleandlatent.com" data-cursor>office@sensibleandlatent.com</a></dd></div>
+            <div><dt>Shop</dt><dd>2140 E. Speedway Blvd, Tucson AZ 85719</dd></div>
+            <div><dt>Hours</dt><dd>Mon–Sat 7:00–19:00 · no-cool line 24/7, May–Sept</dd></div>
+            <div><dt>License</dt><dd>AZ ROC 331408 · CR-39 · bonded &amp; insured</dd></div>
+          </dl>
+        </aside>
+      </div>
+      <footer class="foot">
+        <p class="foot-mark">Sensible <em>&amp;</em> Latent</p>
+        <p class="foot-line data-array">© 2026 Sensible &amp; Latent LLC · Tucson, Arizona · cycle complete: 760,000 µ → 40 °F → 115 °F → 40 °F</p>
+        <p class="foot-line data-array">Design concept. Sensible &amp; Latent is a fictional company: the people, numbers, licence and reviews are invented, and every image is AI-generated.</p>
+      </footer>
+    </section>
+  </main>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
