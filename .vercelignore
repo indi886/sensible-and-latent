@@ -1,0 +1,6 @@
+# CLI uploads: ship source only (Vercel runs the build)
+node_modules
+dist
+assets-src
+shots
+.claude
