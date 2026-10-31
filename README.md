@@ -205,4 +205,6 @@ Because the deployed concept is public, it carries a one-line "design concept, f
 
 ## Deployment
 
+Live: **https://sensible-and-latent.vercel.app**, from the Vercel project `sensible-and-latent` (scope "indi's projects"), connected to `github.com/indi886/sensible-and-latent`. Every push to `main` deploys to production, and other branches get preview URLs.
+
 Vercel builds it from `vercel.json` (Vite, `npm run build`, `dist/`). Hashed bundles are cached for a year and `/media` for a week.
